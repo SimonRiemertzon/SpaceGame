@@ -18,7 +18,7 @@ class GameScene: SKScene {
 
     
     override func didMove(to view: SKView) {
-        player = self.childNode(withName: "player") as! SKSpriteNode
+        player = self.childNode(withName: "player") as? SKSpriteNode
     }
     
     
@@ -62,6 +62,19 @@ class GameScene: SKScene {
         if timeSinceFire < fireRate {
             return
         }
+        
+        spawnLaser()
+        
+        //reset timer
+        timeSinceFire = 0
+    }
+    
+    func spawnLaser() {
+        let scene:SKScene = SKScene(fileNamed: "Laser")!
+        let laser = scene.childNode(withName: "laser")!
+        laser.move(toParent: self)
+        laser.position = player!.position
+        
     }
     
     
