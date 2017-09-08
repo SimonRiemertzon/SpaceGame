@@ -18,7 +18,7 @@ class GameScene: SKScene {
 
     
     override func didMove(to view: SKView) {
-        player = self.childNode(withName: player)
+        player = self.childNode(withName: "player") as! SKSpriteNode
     }
     
     
@@ -52,6 +52,17 @@ class GameScene: SKScene {
     
     
     override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
+        checkLaser(currentTime - lastTimeShotWasFired)
+        lastTimeShotWasFired = currentTime
     }
+    
+    func checkLaser(_ frameRate:TimeInterval) {
+        timeSinceFire += frameRate
+        
+        if timeSinceFire < fireRate {
+            return
+        }
+    }
+    
+    
 }
