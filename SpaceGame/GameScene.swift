@@ -11,10 +11,14 @@ import GameplayKit
 
 class GameScene: SKScene {
     
+    var player: SKSpriteNode?
+    var fireRate: TimeInterval = 0.5
+    var timeSinceFire: TimeInterval = 0
+    var lastTimeShotWasFired : TimeInterval = 0
 
     
     override func didMove(to view: SKView) {
-        
+        player = self.childNode(withName: player)
     }
     
     
