@@ -15,7 +15,7 @@ class GameScene: SKScene {
     var fireRate: TimeInterval = 0.5
     var timeSinceFire: TimeInterval = 0
     var lastTimeShotWasFired : TimeInterval = 0
-
+    
     
     override func didMove(to view: SKView) {
         player = self.childNode(withName: "player") as? SKSpriteNode
@@ -23,15 +23,15 @@ class GameScene: SKScene {
     
     
     func touchDown(atPoint pos : CGPoint) {
-    
+        
     }
     
     func touchMoved(toPoint pos : CGPoint) {
- 
+        
     }
     
     func touchUp(atPoint pos : CGPoint) {
-  
+        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -54,6 +54,28 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         checkLaser(currentTime - lastTimeShotWasFired)
         lastTimeShotWasFired = currentTime
+        
+        /*
+         self.enumerateChildNodes , need to scale better. I want to do this for both enemies and lasers.
+       */
+        self.enumerateChildNodes(withName: "laser") {
+            node, stop in
+            if (node is SKSpriteNode) {
+                let sprite = node as! SKSpriteNode
+                
+                if (sprite.position.x > self.size.width
+                    || sprite.position.x < -self.size.width
+                    || sprite.position.y > self.size.height
+                    || sprite.position.y < -self.size.height
+                    )
+                {
+                    sprite.removeFromParent()
+                }
+            }
+        }
+        
+     
+        
     }
     
     func checkLaser(_ frameRate:TimeInterval) {
@@ -64,7 +86,6 @@ class GameScene: SKScene {
         }
         
         spawnLaser()
-        
         //reset timer
         timeSinceFire = 0
     }
