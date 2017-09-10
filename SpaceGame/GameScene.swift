@@ -9,16 +9,48 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene {
+
+class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var player: SKSpriteNode?
+    var enemy: SKSpriteNode?
+    var item: SKSpriteNode?
     var fireRate: TimeInterval = 0.5
     var timeSinceFire: TimeInterval = 0
     var lastTimeShotWasFired : TimeInterval = 0
     let nodesToBeRemoved = ["laser", "enemy"]
     
+    let noCategory: UInt32 = 0
+    let laserCategory:UInt32 = 0b1
+    let playerCategory:UInt32 = 0b1 << 1
+    let enemyCategory:UInt32 = 0b1 << 2
+    let itemCategory:UInt32 = 0b1 << 3
+    
+    
     override func didMove(to view: SKView) {
+        self.physicsWorld.contactDelegate = self
+        
         player = self.childNode(withName: "player") as? SKSpriteNode
+        player?.physicsBody?.categoryBitMask = playerCategory
+        player?.physicsBody?.collisionBitMask = noCategory
+        player?.physicsBody?.contactTestBitMask = enemyCategory | itemCategory
+
+        enemy = self.childNode(withName: "enemy") as? SKSpriteNode
+        enemy?.physicsBody?.categoryBitMask = enemyCategory
+        enemy?.physicsBody?.collisionBitMask = noCategory
+        enemy?.physicsBody?.contactTestBitMask = playerCategory | laserCategory
+        
+        
+        item = self.childNode(withName: "item") as? SKSpriteNode
+        item?.physicsBody?.categoryBitMask = itemCategory
+        item?.physicsBody?.collisionBitMask = noCategory
+        item?.physicsBody?.contactTestBitMask = playerCategory
+
+    }
+    
+    func didBegin (_ contact: SKPhysicsContact) {
+        contact.bodyA.node?.removeFromParent()
+        contact.bodyB.node?.removeFromParent()
     }
     
     
@@ -82,6 +114,11 @@ class GameScene: SKScene {
         let laser = scene.childNode(withName: "laser")!
         laser.move(toParent: self)
         laser.position = player!.position
+        laser.physicsBody?.categoryBitMask = laserCategory
+        laser.physicsBody?.collisionBitMask = laserCategory
+        laser.physicsBody?.contactTestBitMask = enemyCategory
+        
+
     }
     
     
