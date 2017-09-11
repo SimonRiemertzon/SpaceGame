@@ -11,19 +11,35 @@ import GameplayKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
+    //Nodes
     var player: SKSpriteNode?
     var enemy: SKSpriteNode?
     var item: SKSpriteNode?
     var item2: SKSpriteNode?
+    var cameraNode: SKCameraNode?
+    
+    // Timeintervals and rates
     var fireRate: TimeInterval = 0.5
+    var enemyRate: TimeInterval = 5
+    
+    var timeSinceLastEnemySpawn: TimeInterval = 0
     var timeSinceFire: TimeInterval = 0
     var lastTimeShotWasFired : TimeInterval = 0
+    var lastTimeEnemySpawned : TimeInterval = 0
+    
+    
+    
     let nodesToBeRemoved = ["laser", "enemy"]
     var scoreLabel: SKLabelNode?
     var score = 0
-    var cameraNode: SKCameraNode?
+    
     let cameraOffsetValue: CGFloat = 600
     
+    var attackSpeed: CGFloat = -200
+    
+    
+    
+    //Masks
     let noCategory: UInt32 = 0
     let laserCategory:UInt32 = 0b1
     let playerCategory:UInt32 = 0b1 << 1
@@ -98,6 +114,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func enemyDidCollide(with other: SKNode) {
+        print("Enemy collided with laser")
         if other.parent == nil {
             
         }
@@ -154,7 +171,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
         checkAndFireLaser(currentTime - lastTimeShotWasFired)
+        checkAndSpawnEnemy(currentTime - lastTimeEnemySpawned)
         lastTimeShotWasFired = currentTime
+        lastTimeEnemySpawned = currentTime
         
         for node in nodesToBeRemoved {
             self.enumerateChildNodes(withName: node) {
@@ -189,6 +208,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         timeSinceFire = 0
     }
     
+    func checkAndSpawnEnemy(_ frameRate:TimeInterval) {
+        timeSinceLastEnemySpawn += frameRate
+        
+        if timeSinceLastEnemySpawn < enemyRate {
+            return
+        }
+        spawnEnemy()
+        timeSinceLastEnemySpawn = 0
+        
+    }
+    
     func spawnLaser() {
         let scene:SKScene = SKScene(fileNamed: "Laser")!
         let laser = scene.childNode(withName: "laser")!
@@ -197,16 +227,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         laser.physicsBody?.categoryBitMask = laserCategory
         laser.physicsBody?.collisionBitMask = laserCategory
         laser.physicsBody?.contactTestBitMask = enemyCategory
+        print(String(describing: laser.physicsBody?.contactTestBitMask))
     }
     
     func spawnEnemy() {
-        /*
+        print("Spawning enemy")
         let scene:SKScene = SKScene(fileNamed: "Enemy")!
-        let enemy = scene.childNode(withName: "enemy")!
-        enemy.move(toParent: self)
-        enemy.position = CGPoint(x: 0, y: 600)
-        enemy.physicsBody?.velocity(CGVector(dx: 0, dy: -200))
-        */
+        let enemy2 = scene.childNode(withName: "enemy2")!
+        enemy2.move(toParent: self)
+        enemy2.position = CGPoint(x: 0, y: player!.position.y + 600)
+        enemy2.physicsBody?.categoryBitMask = enemyCategory
+        enemy2.physicsBody?.collisionBitMask = noCategory
+        enemy2.physicsBody?.contactTestBitMask = playerCategory | laserCategory
+        enemy2.physicsBody?.velocity.dy = attackSpeed
+        
+        
+        print(String(describing: enemy2.physicsBody?.contactTestBitMask))
     }
     
     
