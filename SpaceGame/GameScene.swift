@@ -21,6 +21,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let nodesToBeRemoved = ["laser", "enemy"]
     var scoreLabel: SKLabelNode?
     var score = 0
+    var cameraNode: SKCameraNode?
     
     let noCategory: UInt32 = 0
     let laserCategory:UInt32 = 0b1
@@ -56,6 +57,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         item2?.physicsBody?.categoryBitMask = itemCategory
         item2?.physicsBody?.collisionBitMask = noCategory
         item2?.physicsBody?.contactTestBitMask = playerCategory
+        
+        //Setting camera
+        cameraNode = self.childNode(withName: "cameraNode") as? SKCameraNode
+        camera = cameraNode
+        
         
         //Creating actions
         let moveAction: SKAction = SKAction.moveBy(x: -200, y: 0, duration: 2)
@@ -134,7 +140,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for touch in touches {
             let location = touch.location(in: self)
             
-            if(location.y <= 0) {
+            if(location.y < player!.position.y + 200) {
                 player?.run(SKAction.moveTo(x: location.x, duration: 0.2))
             }
             
@@ -165,6 +171,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 }
             }
         }
+        
+        cameraNode?.position.y = player!.position.y + 600
     }
     
     func checkAndFireLaser(_ frameRate:TimeInterval) {
@@ -187,8 +195,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         laser.physicsBody?.categoryBitMask = laserCategory
         laser.physicsBody?.collisionBitMask = laserCategory
         laser.physicsBody?.contactTestBitMask = enemyCategory
-        
-
+    }
+    
+    func spawnEnemy() {
+        /*
+        let scene:SKScene = SKScene(fileNamed: "Enemy")!
+        let enemy = scene.childNode(withName: "enemy")!
+        enemy.move(toParent: self)
+        enemy.position = CGPoint(x: 0, y: 600)
+        enemy.physicsBody?.velocity(CGVector(dx: 0, dy: -200))
+        */
     }
     
     
