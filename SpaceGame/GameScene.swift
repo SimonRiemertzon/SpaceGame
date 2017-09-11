@@ -14,6 +14,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var player: SKSpriteNode?
     var enemy: SKSpriteNode?
     var item: SKSpriteNode?
+    var item2: SKSpriteNode?
     var fireRate: TimeInterval = 0.5
     var timeSinceFire: TimeInterval = 0
     var lastTimeShotWasFired : TimeInterval = 0
@@ -28,9 +29,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let itemCategory:UInt32 = 0b1 << 3
     
     
+
     override func didMove(to view: SKView) {
         self.physicsWorld.contactDelegate = self
         
+        // Instansiating variables and setting masks
         scoreLabel = self.childNode(withName: "scoreLabel") as? SKLabelNode
         
         player = self.childNode(withName: "player") as? SKSpriteNode
@@ -48,6 +51,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         item?.physicsBody?.categoryBitMask = itemCategory
         item?.physicsBody?.collisionBitMask = noCategory
         item?.physicsBody?.contactTestBitMask = playerCategory
+        
+        item2 = self.childNode(withName: "item2") as? SKSpriteNode
+        item2?.physicsBody?.categoryBitMask = itemCategory
+        item2?.physicsBody?.collisionBitMask = noCategory
+        item2?.physicsBody?.contactTestBitMask = playerCategory
+        
+        //Creating actions
+        let moveAction: SKAction = SKAction.moveBy(x: -200, y: 0, duration: 2)
+        moveAction.timingMode = .easeInEaseOut
+        let reversedAction: SKAction = moveAction.reversed()
+        let sequence:SKAction = SKAction.sequence([moveAction, reversedAction])
+        let repeatAction: SKAction = SKAction.repeatForever(sequence)
+        item2?.run(repeatAction, withKey: "itemMove")
+        
 
     }
     
@@ -102,18 +119,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             contact.bodyA.node?.removeFromParent()
             contact.bodyB.node?.removeFromParent()
         }
-        
-        
-        
-       
     }
     
-    
-
+    func touchDown(atPoint pos : CGPoint) {
+        
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    
+        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
+    
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
