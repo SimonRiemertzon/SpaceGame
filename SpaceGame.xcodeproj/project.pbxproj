@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DB7C8F701F630B32002C3F6A /* Laser.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB7C8F6F1F630B32002C3F6A /* Laser.sks */; };
+		DB7C8F721F66C449002C3F6A /* Explosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB7C8F711F66C449002C3F6A /* Explosion.sks */; };
 		DBDD13B01F6147E600447E37 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDD13AF1F6147E600447E37 /* AppDelegate.swift */; };
 		DBDD13B21F6147E600447E37 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = DBDD13B11F6147E600447E37 /* GameScene.sks */; };
 		DBDD13B41F6147E600447E37 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = DBDD13B31F6147E600447E37 /* Actions.sks */; };
@@ -20,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		DB7C8F6F1F630B32002C3F6A /* Laser.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Laser.sks; sourceTree = "<group>"; };
+		DB7C8F711F66C449002C3F6A /* Explosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Explosion.sks; sourceTree = "<group>"; };
 		DBDD13AC1F6147E600447E37 /* SpaceGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpaceGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBDD13AF1F6147E600447E37 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DBDD13B11F6147E600447E37 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -64,6 +66,7 @@
 			children = (
 				DBDD13AF1F6147E600447E37 /* AppDelegate.swift */,
 				DBDD13B11F6147E600447E37 /* GameScene.sks */,
+				DB7C8F711F66C449002C3F6A /* Explosion.sks */,
 				DBDD13B31F6147E600447E37 /* Actions.sks */,
 				DBDD13B51F6147E600447E37 /* GameScene.swift */,
 				DBDD13B71F6147E600447E37 /* GameViewController.swift */,
@@ -140,6 +143,7 @@
 				DBDD13BD1F6147E600447E37 /* Assets.xcassets in Resources */,
 				DB7C8F701F630B32002C3F6A /* Laser.sks in Resources */,
 				DBDD13C01F6147E600447E37 /* LaunchScreen.storyboard in Resources */,
+				DB7C8F721F66C449002C3F6A /* Explosion.sks in Resources */,
 				DBDD13B41F6147E600447E37 /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

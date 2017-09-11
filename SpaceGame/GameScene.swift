@@ -9,7 +9,6 @@
 import SpriteKit
 import GameplayKit
 
-
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var player: SKSpriteNode?
@@ -53,6 +52,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func playerDidCollide(with other: SKNode) {
+        
+        if other.parent == nil {
+            return
+        }
+        
         let otherCategory = other.physicsBody?.categoryBitMask
         
         if otherCategory == itemCategory {
@@ -68,6 +72,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    func enemyDidCollide(with other: SKNode) {
+        if other.parent == nil {
+            
+        }
+        
+        let otherCategory = other.physicsBody?.categoryBitMask
+        
+        if (otherCategory == laserCategory) {
+            let explosion: SKEmitterNode = SKEmitterNode(fileNamed: "Explosion")!
+            explosion.position = enemy!.position
+            self.addChild(explosion)
+        }
+    }
+    
     func didBegin (_ contact: SKPhysicsContact) {
         let categoryA: UInt32 = contact.bodyA.categoryBitMask
         let categoryB: UInt32 = contact.bodyA.categoryBitMask
@@ -75,7 +93,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if categoryA == playerCategory || categoryB == playerCategory {
             let otherNode: SKNode = (categoryA == playerCategory) ? contact.bodyB.node! : contact.bodyA.node!
             playerDidCollide(with: otherNode)
-        } else {
+            
+        } else if categoryA == enemyCategory || categoryB == enemyCategory {
+            let otherNode: SKNode = (categoryA == enemyCategory) ? contact.bodyB.node! : contact.bodyA.node!
+            enemyDidCollide(with: otherNode)
+            
+            
             contact.bodyA.node?.removeFromParent()
             contact.bodyB.node?.removeFromParent()
         }
