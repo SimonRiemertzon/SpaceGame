@@ -48,9 +48,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     }
     
+    func playerDidCollide(with other: SKNode) {
+        let otherCategory = other.physicsBody?.categoryBitMask
+        
+        if otherCategory == itemCategory {
+            other.removeFromParent()
+        } else if otherCategory == enemyCategory {
+            other.removeFromParent()
+            player?.removeFromParent()
+        }
+    }
+    
     func didBegin (_ contact: SKPhysicsContact) {
-        contact.bodyA.node?.removeFromParent()
-        contact.bodyB.node?.removeFromParent()
+        let categoryA: UInt32 = contact.bodyA.categoryBitMask
+        let categoryB: UInt32 = contact.bodyA.categoryBitMask
+        
+        if categoryA == playerCategory || categoryB == playerCategory {
+            let otherNode: SKNode = (categoryA == playerCategory) ? contact.bodyB.node! : contact.bodyA.node!
+            playerDidCollide(with: otherNode)
+        } else {
+            contact.bodyA.node?.removeFromParent()
+            contact.bodyB.node?.removeFromParent()
+        }
+        
+        
+        
+       
     }
     
     
