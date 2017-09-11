@@ -22,12 +22,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var scoreLabel: SKLabelNode?
     var score = 0
     var cameraNode: SKCameraNode?
+    let cameraOffsetValue: CGFloat = 600
     
     let noCategory: UInt32 = 0
     let laserCategory:UInt32 = 0b1
     let playerCategory:UInt32 = 0b1 << 1
     let enemyCategory:UInt32 = 0b1 << 2
     let itemCategory:UInt32 = 0b1 << 3
+    
     
     
 
@@ -160,10 +162,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 if (node is SKSpriteNode) {
                     let sprite = node as! SKSpriteNode
                     
-                    if (sprite.position.x > self.size.width
-                        || sprite.position.x < -self.size.width
-                        || sprite.position.y > self.size.height
-                        || sprite.position.y < -self.size.height
+                    if (sprite.position.x > self.player!.position.x + self.scene!.size.width
+                        || sprite.position.x < self.player!.position.x - self.scene!.size.width
+                        || sprite.position.y > self.player!.position.y + self.scene!.size.height
+                        || sprite.position.y < self.player!.position.y - self.scene!.size.height
                         )
                     {
                         sprite.removeFromParent()
@@ -172,7 +174,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
-        cameraNode?.position.y = player!.position.y + 600
+        cameraNode?.position.y = player!.position.y + cameraOffsetValue
     }
     
     func checkAndFireLaser(_ frameRate:TimeInterval) {
