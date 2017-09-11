@@ -19,6 +19,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var timeSinceFire: TimeInterval = 0
     var lastTimeShotWasFired : TimeInterval = 0
     let nodesToBeRemoved = ["laser", "enemy"]
+    var scoreLabel: SKLabelNode?
+    var score = 0
     
     let noCategory: UInt32 = 0
     let laserCategory:UInt32 = 0b1
@@ -29,6 +31,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func didMove(to view: SKView) {
         self.physicsWorld.contactDelegate = self
+        
+        scoreLabel = self.childNode(withName: "scoreLabel") as? SKLabelNode
         
         player = self.childNode(withName: "player") as? SKSpriteNode
         player?.physicsBody?.categoryBitMask = playerCategory
@@ -52,7 +56,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let otherCategory = other.physicsBody?.categoryBitMask
         
         if otherCategory == itemCategory {
+            let points:Int = other.userData?.value(forKey: "points") as! Int
+            score += points
+            scoreLabel?.text = "Score: \(score)"
+            
             other.removeFromParent()
+            
         } else if otherCategory == enemyCategory {
             other.removeFromParent()
             player?.removeFromParent()
