@@ -20,7 +20,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // Timeintervals and rates
     var fireRate: TimeInterval = 0.5
-    var enemyRate: TimeInterval = 5
+    var enemyRate: TimeInterval = 1
     
     var timeSinceLastEnemySpawn: TimeInterval = 0
     var timeSinceFire: TimeInterval = 0
@@ -48,7 +48,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     
-
+    
     override func didMove(to view: SKView) {
         self.physicsWorld.contactDelegate = self
         
@@ -59,7 +59,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player?.physicsBody?.categoryBitMask = playerCategory
         player?.physicsBody?.collisionBitMask = noCategory
         player?.physicsBody?.contactTestBitMask = enemyCategory | itemCategory
-
+        
         enemy = self.childNode(withName: "enemy") as? SKSpriteNode
         enemy?.physicsBody?.categoryBitMask = enemyCategory
         enemy?.physicsBody?.collisionBitMask = noCategory
@@ -89,7 +89,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let repeatAction: SKAction = SKAction.repeatForever(sequence)
         item2?.run(repeatAction, withKey: "itemMove")
         
-
+        
     }
     
     func playerDidCollide(with other: SKNode) {
@@ -114,30 +114,42 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func enemyDidCollide(with other: SKNode) {
-        print("Enemy collided with laser")
         if other.parent == nil {
             
         }
         
         let otherCategory = other.physicsBody?.categoryBitMask
         
-        if (otherCategory == laserCategory) {
-            let explosion: SKEmitterNode = SKEmitterNode(fileNamed: "Explosion")!
-            explosion.position = enemy!.position
-            self.addChild(explosion)
+        for node in self.children {
+            if (otherCategory == laserCategory && node.name == "enemy2") {
+                let explosion: SKEmitterNode = SKEmitterNode(fileNamed: "Explosion")!
+                explosion.position = node.position
+                self.addChild(explosion)
+            }
+            
         }
+        
+      
     }
     
     func didBegin (_ contact: SKPhysicsContact) {
         let categoryA: UInt32 = contact.bodyA.categoryBitMask
-        let categoryB: UInt32 = contact.bodyA.categoryBitMask
+        let categoryB: UInt32 = contact.bodyB.categoryBitMask
         
         if categoryA == playerCategory || categoryB == playerCategory {
             let otherNode: SKNode = (categoryA == playerCategory) ? contact.bodyB.node! : contact.bodyA.node!
             playerDidCollide(with: otherNode)
             
         } else if categoryA == enemyCategory || categoryB == enemyCategory {
-            let otherNode: SKNode = (categoryA == enemyCategory) ? contact.bodyB.node! : contact.bodyA.node!
+            guard let nodeB = contact.bodyB.node else {
+                return
+            }
+            
+            guard let nodeA = contact.bodyA.node else {
+                return
+            }
+           
+            let otherNode: SKNode = (categoryA == enemyCategory) ? nodeB : nodeA
             enemyDidCollide(with: otherNode)
             
             
@@ -166,7 +178,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
         }
     }
-
+    
     
     
     override func update(_ currentTime: TimeInterval) {
@@ -227,22 +239,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         laser.physicsBody?.categoryBitMask = laserCategory
         laser.physicsBody?.collisionBitMask = laserCategory
         laser.physicsBody?.contactTestBitMask = enemyCategory
-        print(String(describing: laser.physicsBody?.contactTestBitMask))
     }
     
     func spawnEnemy() {
-        print("Spawning enemy")
-        let scene:SKScene = SKScene(fileNamed: "Enemy")!
-        let enemy2 = scene.childNode(withName: "enemy2")!
-        enemy2.move(toParent: self)
-        enemy2.position = CGPoint(x: 0, y: player!.position.y + 600)
-        enemy2.physicsBody?.categoryBitMask = enemyCategory
-        enemy2.physicsBody?.collisionBitMask = noCategory
-        enemy2.physicsBody?.contactTestBitMask = playerCategory | laserCategory
-        enemy2.physicsBody?.velocity.dy = attackSpeed
+        print("Spawning Enem")
+        let lowerValue = -375
+        let upperValue = 375
+        let randomXPosition = Int(arc4random_uniform(UInt32(upperValue - lowerValue + 1))) + lowerValue
+        let scene:SKScene = SKScene(fileNamed: "EnemySprite")!
+        let spawnedEnemy = scene.childNode(withName: "enemy2")!
+        spawnedEnemy.move(toParent: self)
+        spawnedEnemy.position = CGPoint(x: CGFloat(randomXPosition), y: player!.position.y + 1500)
+        spawnedEnemy.physicsBody?.categoryBitMask = enemyCategory
+        spawnedEnemy.physicsBody?.collisionBitMask = noCategory
+        spawnedEnemy.physicsBody?.contactTestBitMask = playerCategory | laserCategory
+        spawnedEnemy.physicsBody?.velocity.dy = attackSpeed
         
-        
-        print(String(describing: enemy2.physicsBody?.contactTestBitMask))
     }
     
     

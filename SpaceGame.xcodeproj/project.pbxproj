@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DB71750E1F66ED8F00666B88 /* Enemy.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB71750D1F66ED8F00666B88 /* Enemy.sks */; };
+		DB71750E1F66ED8F00666B88 /* EnemySprite.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB71750D1F66ED8F00666B88 /* EnemySprite.sks */; };
 		DB7C8F701F630B32002C3F6A /* Laser.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB7C8F6F1F630B32002C3F6A /* Laser.sks */; };
 		DB7C8F721F66C449002C3F6A /* Explosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB7C8F711F66C449002C3F6A /* Explosion.sks */; };
 		DBDD13B01F6147E600447E37 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDD13AF1F6147E600447E37 /* AppDelegate.swift */; };
@@ -21,7 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		DB71750D1F66ED8F00666B88 /* Enemy.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Enemy.sks; sourceTree = "<group>"; };
+		DB71750D1F66ED8F00666B88 /* EnemySprite.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = EnemySprite.sks; sourceTree = "<group>"; };
 		DB7C8F6F1F630B32002C3F6A /* Laser.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Laser.sks; sourceTree = "<group>"; };
 		DB7C8F711F66C449002C3F6A /* Explosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Explosion.sks; sourceTree = "<group>"; };
 		DBDD13AC1F6147E600447E37 /* SpaceGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpaceGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -51,7 +51,7 @@
 			isa = PBXGroup;
 			children = (
 				DB7C8F6F1F630B32002C3F6A /* Laser.sks */,
-				DB71750D1F66ED8F00666B88 /* Enemy.sks */,
+				DB71750D1F66ED8F00666B88 /* EnemySprite.sks */,
 			);
 			name = "Spawnable Sprites";
 			sourceTree = "<group>";
@@ -155,7 +155,7 @@
 				DB7C8F701F630B32002C3F6A /* Laser.sks in Resources */,
 				DBDD13C01F6147E600447E37 /* LaunchScreen.storyboard in Resources */,
 				DB7C8F721F66C449002C3F6A /* Explosion.sks in Resources */,
-				DB71750E1F66ED8F00666B88 /* Enemy.sks in Resources */,
+				DB71750E1F66ED8F00666B88 /* EnemySprite.sks in Resources */,
 				DBDD13B41F6147E600447E37 /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
