@@ -243,9 +243,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func spawnEnemy() {
         print("Spawning Enem")
-        let lowerValue = -375
-        let upperValue = 375
+        let spriteWidth = 60
+        let lowerValue = Int(frame.minX) + spriteWidth
+        let upperValue = Int(frame.maxX) - spriteWidth
+      
+        
         let randomXPosition = Int(arc4random_uniform(UInt32(upperValue - lowerValue + 1))) + lowerValue
+        print(randomXPosition)
+        
+        
         let scene:SKScene = SKScene(fileNamed: "EnemySprite")!
         let spawnedEnemy = scene.childNode(withName: "enemy2")!
         spawnedEnemy.move(toParent: self)
