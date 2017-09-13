@@ -68,19 +68,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         enemy?.physicsBody?.collisionBitMask = noCategory
         enemy?.physicsBody?.contactTestBitMask = playerCategory | laserCategory
         
-        /*
-        item = self.childNode(withName: "item") as? SKSpriteNode
-        item?.physicsBody?.categoryBitMask = itemCategory
-        item?.physicsBody?.collisionBitMask = noCategory
-        item?.physicsBody?.contactTestBitMask = playerCategory
-        
-        item2 = self.childNode(withName: "item2") as? SKSpriteNode
-        item2?.physicsBody?.categoryBitMask = itemCategory
-        item2?.physicsBody?.collisionBitMask = noCategory
-        item2?.physicsBody?.contactTestBitMask = playerCategory
-        */
-        
-        
         //Setting camera
         cameraNode = self.childNode(withName: "cameraNode") as? SKCameraNode
         camera = cameraNode
@@ -108,7 +95,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
            
             score += points
             scoreLabel?.text = "Score: \(score)"
-            print("\(String(describing: scoreLabel?.text))")
             other.removeFromParent()
             
         } else if otherCategory == enemyCategory {
