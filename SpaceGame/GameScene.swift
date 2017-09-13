@@ -9,7 +9,22 @@
 import SpriteKit
 import GameplayKit
 
+extension Float {
+    var cleanValue: String {
+        return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.f", self) : String(self)
+    }
+}
+
+//Public variables
+var multiplyer: Float = 1.0
+var enemiesShotDown: Float = 0
+var score: Float = 0
+
 class GameScene: SKScene, SKPhysicsContactDelegate {
+    
+  
+    
+    
     
     //Nodes
     var player: SKSpriteNode!
@@ -34,8 +49,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let nodesToBeRemoved = ["laser", "spawnableItem", "enemy2", "explosion"]
     var scoreLabel: SKLabelNode?
     var multiplyerLabel: SKLabelNode?
-    var multiplyer = 0.0
-    var score = 0
+
     
     let cameraOffsetValue: CGFloat = 600
     
@@ -61,7 +75,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Instansiating variables and setting masks
         scoreLabel = camera?.childNode(withName: "scoreLabel") as? SKLabelNode
         scoreLabel?.text = "Score: 0"
-        
+        multiplyerLabel = camera?.childNode(withName: "multiplyerLabel") as? SKLabelNode
+        multiplyerLabel?.text = "Multiplyer: 0"
         
         
         
@@ -93,9 +108,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         let otherCategory = other.physicsBody?.categoryBitMask
         if otherCategory == itemCategory {
-            let points:Int = other.userData?.value(forKey: "points") as! Int
-            score += points
-            scoreLabel?.text = "Score: \(score)"
+            let points:Float = other.userData?.value(forKey: "points") as! Float
+            score += points * multiplyer
+            scoreLabel?.text = "Score: \(score.cleanValue)"
             other.removeFromParent()
             
         } else if otherCategory == enemyCategory {
@@ -129,6 +144,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let explosion:SKEmitterNode = SKEmitterNode(fileNamed: "Explosion")!
             explosion.position = contact.bodyA.node!.position
             self.addChild(explosion)
+            multiplyer += 0.1
+            enemiesShotDown += 1
+            multiplyerLabel?.text = "Multiplyer: \(multiplyer.cleanValue)"
             
             contact.bodyA.node?.removeFromParent()
             contact.bodyB.node?.removeFromParent()
@@ -254,6 +272,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         spawnedEnemy?.physicsBody?.contactTestBitMask = playerCategory | laserCategory
         spawnedEnemy?.position = CGPoint(x: CGFloat(randomXPosition), y: frame.maxY + player.position.y + cameraOffsetValue)
         spawnedEnemy?.physicsBody?.velocity.dy = fallspeed + CGFloat(giveRandomNumberBetween(lowerValue: -100, upperValue: 0, oneDecimal: false))
+        
         spawnedEnemy?.move(toParent: self)
     }
     
@@ -270,7 +289,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         spawnedItem?.physicsBody?.collisionBitMask = noCategory
         spawnedItem?.physicsBody?.contactTestBitMask = playerCategory
         spawnedItem?.physicsBody?.velocity.dy = fallspeed + CGFloat(giveRandomNumberBetween(lowerValue: -100, upperValue: 0, oneDecimal: false))
+        
         spawnedItem?.move(toParent: self)
+       
         itemRate = itemRate + giveRandomNumberBetween(lowerValue: 11, upperValue: 20, oneDecimal: true)
         print("Itemrate is now: \(itemRate)")
         
