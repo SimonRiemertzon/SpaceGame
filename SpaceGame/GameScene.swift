@@ -21,11 +21,6 @@ var enemiesShotDown: Float = 0
 var score: Float = 0
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    
-  
-    
-    
-    
     //Nodes
     var player: SKSpriteNode!
     var enemy: SKSpriteNode?
@@ -38,7 +33,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var fireRate: TimeInterval = 0.3
     var enemyRate: TimeInterval = 1
     var itemRate: TimeInterval = 5
-    
     var timeSinceFire: TimeInterval = 0
     var timeSinceLastEnemySpawn: TimeInterval = 0
     var timeSinceLastItemSpawn: TimeInterval = 0
@@ -47,27 +41,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var lastTimeItemSpawned : TimeInterval = 0
     
     let nodesToBeRemoved = ["laser", "spawnableItem", "enemy2", "explosion"]
+    
+    //Labels
     var scoreLabel: SKLabelNode?
     var multiplyerLabel: SKLabelNode?
 
-    
+    //Quality of programmer-life values
     let cameraOffsetValue: CGFloat = 600
-    
     var fallspeed: CGFloat = -200
-    
-    //var fallspeed:  CGFloat = CGFloat(arc4random_uniform(3001))/10.0 + 100 * -1
 
-    
-    
     //Masks
     let noCategory: UInt32 = 0
     let laserCategory:UInt32 = 0b1
     let playerCategory:UInt32 = 0b1 << 1
     let enemyCategory:UInt32 = 0b1 << 2
     let itemCategory:UInt32 = 0b1 << 3
-    
-    
-    
     
     override func didMove(to view: SKView) {
         self.physicsWorld.contactDelegate = self
@@ -78,8 +66,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         multiplyerLabel = camera?.childNode(withName: "multiplyerLabel") as? SKLabelNode
         multiplyerLabel?.text = "Multiplyer: 0"
         
-        
-        
         player = self.childNode(withName: "player") as? SKSpriteNode
         player?.physicsBody?.categoryBitMask = playerCategory
         player?.physicsBody?.collisionBitMask = noCategory
@@ -89,7 +75,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cameraNode = self.childNode(withName: "cameraNode") as? SKCameraNode
         camera = cameraNode
         
-        
         //Creating actions
         let moveAction: SKAction = SKAction.moveBy(x: -200, y: 0, duration: 2)
         moveAction.timingMode = .easeInEaseOut
@@ -97,7 +82,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let sequence:SKAction = SKAction.sequence([moveAction, reversedAction])
         let repeatAction: SKAction = SKAction.repeatForever(sequence)
         item2?.run(repeatAction, withKey: "itemMove")
-        
         
     }
     
@@ -112,7 +96,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             score += points * multiplyer
             scoreLabel?.text = "Score: \(score.cleanValue)"
             other.removeFromParent()
-            
         } else if otherCategory == enemyCategory {
             self.removeAllChildren()
             let gameOverScene = GameOverScene(fileNamed: "GameOverScene")
@@ -169,8 +152,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if(location.y < player!.position.y + 200) {
                 player?.run(SKAction.moveTo(x: location.x, duration: 0.2))
             }
-            
-            
         }
     }
     
@@ -185,7 +166,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         lastTimeShotWasFired = currentTime
         lastTimeEnemySpawned = currentTime
         lastTimeItemSpawned = currentTime
-
+        
         for node in nodesToBeRemoved {
             self.enumerateChildNodes(withName: node) {
                 node, stop in
@@ -215,8 +196,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             return
         }
         spawnLaser()
-        
-        //reset timer
         timeSinceFire = 0
     }
     
@@ -232,7 +211,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func checkAndSpawnItem (_ frameRate: TimeInterval) {
         timeSinceLastItemSpawn += frameRate
-
+        
         if timeSinceLastItemSpawn < enemyRate {
             return
         }
@@ -246,7 +225,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if(oneDecimal) {
             result = result / 10
         }
-        print("This is the result of randomNumber: \(result)")
         return result
     }
     
@@ -272,7 +250,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         spawnedEnemy?.physicsBody?.contactTestBitMask = playerCategory | laserCategory
         spawnedEnemy?.position = CGPoint(x: CGFloat(randomXPosition), y: frame.maxY + player.position.y + cameraOffsetValue)
         spawnedEnemy?.physicsBody?.velocity.dy = fallspeed + CGFloat(giveRandomNumberBetween(lowerValue: -100, upperValue: 0, oneDecimal: false))
-        
         spawnedEnemy?.move(toParent: self)
     }
     
@@ -291,9 +268,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         spawnedItem?.physicsBody?.velocity.dy = fallspeed + CGFloat(giveRandomNumberBetween(lowerValue: -100, upperValue: 0, oneDecimal: false))
         
         spawnedItem?.move(toParent: self)
-       
+        
         itemRate = itemRate + giveRandomNumberBetween(lowerValue: 11, upperValue: 20, oneDecimal: true)
-        print("Itemrate is now: \(itemRate)")
+        
         
     }
 }
