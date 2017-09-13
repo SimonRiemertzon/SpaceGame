@@ -33,6 +33,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     let nodesToBeRemoved = ["laser", "spawnableItem", "enemy2", "explosion"]
     var scoreLabel: SKLabelNode?
+    var multiplyerLabel: SKLabelNode?
+    var multiplyer = 0.0
     var score = 0
     
     let cameraOffsetValue: CGFloat = 600
@@ -60,15 +62,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel = camera?.childNode(withName: "scoreLabel") as? SKLabelNode
         scoreLabel?.text = "Score: 0"
         
+        
+        
+        
         player = self.childNode(withName: "player") as? SKSpriteNode
         player?.physicsBody?.categoryBitMask = playerCategory
         player?.physicsBody?.collisionBitMask = noCategory
         player?.physicsBody?.contactTestBitMask = enemyCategory | itemCategory
-        
-        enemy = self.childNode(withName: "enemy") as? SKSpriteNode
-        enemy?.physicsBody?.categoryBitMask = enemyCategory
-        enemy?.physicsBody?.collisionBitMask = noCategory
-        enemy?.physicsBody?.contactTestBitMask = playerCategory | laserCategory
         
         //Setting camera
         cameraNode = self.childNode(withName: "cameraNode") as? SKCameraNode
@@ -99,8 +99,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             other.removeFromParent()
             
         } else if otherCategory == enemyCategory {
-            other.removeFromParent()
-            player?.removeFromParent()
+            self.removeAllChildren()
+            let gameOverScene = GameOverScene(fileNamed: "GameOverScene")
+            gameOverScene?.scaleMode = .aspectFill
+            self.view?.presentScene(gameOverScene!, transition: SKTransition.fade(withDuration: 0.5))
         }
     }
     
