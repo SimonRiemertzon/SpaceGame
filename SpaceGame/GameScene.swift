@@ -20,9 +20,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var cameraNode: SKCameraNode?
     
     // Timeintervals and rates
-    var fireRate: TimeInterval = 0.5
+    var fireRate: TimeInterval = 0.3
     var enemyRate: TimeInterval = 1
-    var itemRate: TimeInterval = 1
+    var itemRate: TimeInterval = 5
     
     var timeSinceFire: TimeInterval = 0
     var timeSinceLastEnemySpawn: TimeInterval = 0
@@ -37,8 +37,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     let cameraOffsetValue: CGFloat = 600
     
-    var attackSpeed: CGFloat = -200
+    var fallspeed: CGFloat = -200
     
+    //var fallspeed:  CGFloat = CGFloat(arc4random_uniform(3001))/10.0 + 100 * -1
+
     
     
     //Masks
@@ -92,7 +94,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let otherCategory = other.physicsBody?.categoryBitMask
         if otherCategory == itemCategory {
             let points:Int = other.userData?.value(forKey: "points") as! Int
-           
             score += points
             scoreLabel?.text = "Score: \(score)"
             other.removeFromParent()
@@ -124,7 +125,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         } else if categoryA == enemyCategory || categoryB == enemyCategory {
             
             let explosion:SKEmitterNode = SKEmitterNode(fileNamed: "Explosion")!
-            
             explosion.position = contact.bodyA.node!.position
             self.addChild(explosion)
             
@@ -165,10 +165,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         lastTimeShotWasFired = currentTime
         lastTimeEnemySpawned = currentTime
         lastTimeItemSpawned = currentTime
-        
-        
-        
-        
+
         for node in nodesToBeRemoved {
             self.enumerateChildNodes(withName: node) {
                 node, stop in
@@ -223,6 +220,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         timeSinceLastItemSpawn = 0
     }
     
+    func giveRandomNumberBetween(lowerValue:Double, upperValue:Double, oneDecimal:Bool) -> Double{
+        var result = Double(arc4random_uniform(UInt32(upperValue - lowerValue + 1))) + lowerValue
+        
+        if(oneDecimal) {
+            result = result / 10
+        }
+        print("This is the result of randomNumber: \(result)")
+        return result
+    }
+    
     func spawnLaser() {
         let scene:SKScene = SKScene(fileNamed: "Laser")!
         let laser = scene.childNode(withName: "laser")!
@@ -244,21 +251,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         spawnedEnemy?.physicsBody?.collisionBitMask = noCategory
         spawnedEnemy?.physicsBody?.contactTestBitMask = playerCategory | laserCategory
         spawnedEnemy?.position = CGPoint(x: CGFloat(randomXPosition), y: frame.maxY + player.position.y + cameraOffsetValue)
-        spawnedEnemy?.physicsBody?.velocity.dy = attackSpeed
+        spawnedEnemy?.physicsBody?.velocity.dy = fallspeed + CGFloat(giveRandomNumberBetween(lowerValue: -100, upperValue: 0, oneDecimal: false))
         spawnedEnemy?.move(toParent: self)
     }
     
     func spawnItem() {
+        itemRate = 5
         let spriteWidth: CGFloat = 60
         let lowerValue = Int(frame.minX + spriteWidth)
         let upperValue = Int(frame.maxX - spriteWidth)
         let randomXPosition = Int(arc4random_uniform(UInt32(upperValue - lowerValue + 1))) + lowerValue
         let scene:SKScene = SKScene(fileNamed: "Item")!
-        let spawnedItem = scene.childNode(withName: "spawnableItem")
+        let spawnedItem = scene.childNode(withName: "spawnableItem") as? SKSpriteNode
         spawnedItem?.position = CGPoint(x: CGFloat(randomXPosition), y: frame.maxY + player.position.y + cameraOffsetValue)
         spawnedItem?.physicsBody?.categoryBitMask = itemCategory
         spawnedItem?.physicsBody?.collisionBitMask = noCategory
         spawnedItem?.physicsBody?.contactTestBitMask = playerCategory
+        spawnedItem?.physicsBody?.velocity.dy = fallspeed + CGFloat(giveRandomNumberBetween(lowerValue: -100, upperValue: 0, oneDecimal: false))
         spawnedItem?.move(toParent: self)
+        itemRate = itemRate + giveRandomNumberBetween(lowerValue: 11, upperValue: 20, oneDecimal: true)
+        print("Itemrate is now: \(itemRate)")
+        
     }
 }

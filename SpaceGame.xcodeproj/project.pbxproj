@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DB069EC71F6957540012AA69 /* Item.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB069EC61F6957540012AA69 /* Item.sks */; };
+		DB069ECF1F6970070012AA69 /* MenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB069ECE1F6970070012AA69 /* MenuVC.swift */; };
 		DB71750E1F66ED8F00666B88 /* EnemySprite.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB71750D1F66ED8F00666B88 /* EnemySprite.sks */; };
 		DB7C8F701F630B32002C3F6A /* Laser.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB7C8F6F1F630B32002C3F6A /* Laser.sks */; };
 		DB7C8F721F66C449002C3F6A /* Explosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB7C8F711F66C449002C3F6A /* Explosion.sks */; };
@@ -23,6 +24,7 @@
 
 /* Begin PBXFileReference section */
 		DB069EC61F6957540012AA69 /* Item.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Item.sks; sourceTree = "<group>"; };
+		DB069ECE1F6970070012AA69 /* MenuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuVC.swift; sourceTree = "<group>"; };
 		DB71750D1F66ED8F00666B88 /* EnemySprite.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = EnemySprite.sks; sourceTree = "<group>"; };
 		DB7C8F6F1F630B32002C3F6A /* Laser.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Laser.sks; sourceTree = "<group>"; };
 		DB7C8F711F66C449002C3F6A /* Explosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Explosion.sks; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 				DBDD13B51F6147E600447E37 /* GameScene.swift */,
 				DBDD13B71F6147E600447E37 /* GameViewController.swift */,
 				DBDD13B91F6147E600447E37 /* Main.storyboard */,
+				DB069ECE1F6970070012AA69 /* MenuVC.swift */,
 				DBDD13BC1F6147E600447E37 /* Assets.xcassets */,
 				DBDD13BE1F6147E600447E37 /* LaunchScreen.storyboard */,
 				DBDD13C11F6147E600447E37 /* Info.plist */,
@@ -172,6 +175,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBDD13B61F6147E600447E37 /* GameScene.swift in Sources */,
+				DB069ECF1F6970070012AA69 /* MenuVC.swift in Sources */,
 				DBDD13B81F6147E600447E37 /* GameViewController.swift in Sources */,
 				DBDD13B01F6147E600447E37 /* AppDelegate.swift in Sources */,
 			);
