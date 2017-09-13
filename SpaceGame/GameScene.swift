@@ -22,13 +22,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // Timeintervals and rates
     var fireRate: TimeInterval = 0.5
     var enemyRate: TimeInterval = 1
+    var itemRate: TimeInterval = 1
     
-    var timeSinceLastEnemySpawn: TimeInterval = 0
     var timeSinceFire: TimeInterval = 0
+    var timeSinceLastEnemySpawn: TimeInterval = 0
+    var timeSinceLastItemSpawn: TimeInterval = 0
     var lastTimeShotWasFired : TimeInterval = 0
     var lastTimeEnemySpawned : TimeInterval = 0
+    var lastTimeItemSpawned : TimeInterval = 0
     
-    let nodesToBeRemoved = ["laser", "enemy", "enemy2", "explosion"]
+    let nodesToBeRemoved = ["laser", "spawnableItem", "enemy2", "explosion"]
     var scoreLabel: SKLabelNode?
     var score = 0
     
@@ -52,7 +55,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsWorld.contactDelegate = self
         
         // Instansiating variables and setting masks
-        scoreLabel = self.childNode(withName: "scoreLabel") as? SKLabelNode
+        scoreLabel = camera?.childNode(withName: "scoreLabel") as? SKLabelNode
+        scoreLabel?.text = "Score: 0"
         
         player = self.childNode(withName: "player") as? SKSpriteNode
         player?.physicsBody?.categoryBitMask = playerCategory
@@ -64,11 +68,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         enemy?.physicsBody?.collisionBitMask = noCategory
         enemy?.physicsBody?.contactTestBitMask = playerCategory | laserCategory
         
-        
-        
-        
-        
-        
+        /*
         item = self.childNode(withName: "item") as? SKSpriteNode
         item?.physicsBody?.categoryBitMask = itemCategory
         item?.physicsBody?.collisionBitMask = noCategory
@@ -78,7 +78,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         item2?.physicsBody?.categoryBitMask = itemCategory
         item2?.physicsBody?.collisionBitMask = noCategory
         item2?.physicsBody?.contactTestBitMask = playerCategory
-        
+        */
         
         
         //Setting camera
@@ -102,14 +102,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if other.parent == nil {
             return
         }
-        
         let otherCategory = other.physicsBody?.categoryBitMask
-        
         if otherCategory == itemCategory {
             let points:Int = other.userData?.value(forKey: "points") as! Int
+           
             score += points
             scoreLabel?.text = "Score: \(score)"
-            
+            print("\(String(describing: scoreLabel?.text))")
             other.removeFromParent()
             
         } else if otherCategory == enemyCategory {
@@ -172,10 +171,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     override func update(_ currentTime: TimeInterval) {
+        
         checkAndFireLaser(currentTime - lastTimeShotWasFired)
         checkAndSpawnEnemy(currentTime - lastTimeEnemySpawned)
+        checkAndSpawnItem(currentTime - lastTimeItemSpawned)
+        
         lastTimeShotWasFired = currentTime
         lastTimeEnemySpawned = currentTime
+        lastTimeItemSpawned = currentTime
+        
+        
+        
         
         for node in nodesToBeRemoved {
             self.enumerateChildNodes(withName: node) {
@@ -221,6 +227,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         timeSinceLastEnemySpawn = 0
     }
     
+    func checkAndSpawnItem (_ frameRate: TimeInterval) {
+        timeSinceLastItemSpawn += frameRate
+
+        if timeSinceLastItemSpawn < enemyRate {
+            return
+        }
+        spawnItem()
+        timeSinceLastItemSpawn = 0
+    }
+    
     func spawnLaser() {
         let scene:SKScene = SKScene(fileNamed: "Laser")!
         let laser = scene.childNode(withName: "laser")!
@@ -244,6 +260,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         spawnedEnemy?.position = CGPoint(x: CGFloat(randomXPosition), y: frame.maxY + player.position.y + cameraOffsetValue)
         spawnedEnemy?.physicsBody?.velocity.dy = attackSpeed
         spawnedEnemy?.move(toParent: self)
+    }
     
+    func spawnItem() {
+        let spriteWidth: CGFloat = 60
+        let lowerValue = Int(frame.minX + spriteWidth)
+        let upperValue = Int(frame.maxX - spriteWidth)
+        let randomXPosition = Int(arc4random_uniform(UInt32(upperValue - lowerValue + 1))) + lowerValue
+        let scene:SKScene = SKScene(fileNamed: "Item")!
+        let spawnedItem = scene.childNode(withName: "spawnableItem")
+        spawnedItem?.position = CGPoint(x: CGFloat(randomXPosition), y: frame.maxY + player.position.y + cameraOffsetValue)
+        spawnedItem?.physicsBody?.categoryBitMask = itemCategory
+        spawnedItem?.physicsBody?.collisionBitMask = noCategory
+        spawnedItem?.physicsBody?.contactTestBitMask = playerCategory
+        spawnedItem?.move(toParent: self)
     }
 }
