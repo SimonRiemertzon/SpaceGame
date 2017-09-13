@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB069EC71F6957540012AA69 /* Item.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB069EC61F6957540012AA69 /* Item.sks */; };
+		DB069ECF1F6970070012AA69 /* MenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB069ECE1F6970070012AA69 /* MenuVC.swift */; };
+		DB3904951F69A8BF0078948C /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3904941F69A8BF0078948C /* GameOverScene.swift */; };
+		DB3904971F69A8D60078948C /* GameOverScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB3904961F69A8D60078948C /* GameOverScene.sks */; };
+		DB71750E1F66ED8F00666B88 /* EnemySprite.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB71750D1F66ED8F00666B88 /* EnemySprite.sks */; };
+		DB7C8F701F630B32002C3F6A /* Laser.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB7C8F6F1F630B32002C3F6A /* Laser.sks */; };
+		DB7C8F721F66C449002C3F6A /* Explosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB7C8F711F66C449002C3F6A /* Explosion.sks */; };
 		DBDD13B01F6147E600447E37 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDD13AF1F6147E600447E37 /* AppDelegate.swift */; };
 		DBDD13B21F6147E600447E37 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = DBDD13B11F6147E600447E37 /* GameScene.sks */; };
 		DBDD13B41F6147E600447E37 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = DBDD13B31F6147E600447E37 /* Actions.sks */; };
@@ -18,6 +25,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DB069EC61F6957540012AA69 /* Item.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Item.sks; sourceTree = "<group>"; };
+		DB069ECE1F6970070012AA69 /* MenuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuVC.swift; sourceTree = "<group>"; };
+		DB3904941F69A8BF0078948C /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
+		DB3904961F69A8D60078948C /* GameOverScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameOverScene.sks; sourceTree = "<group>"; };
+		DB3904981F69ADBB0078948C /* LLPIXEL3.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = LLPIXEL3.ttf; sourceTree = "<group>"; };
+		DB71750D1F66ED8F00666B88 /* EnemySprite.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = EnemySprite.sks; sourceTree = "<group>"; };
+		DB7C8F6F1F630B32002C3F6A /* Laser.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Laser.sks; sourceTree = "<group>"; };
+		DB7C8F711F66C449002C3F6A /* Explosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Explosion.sks; sourceTree = "<group>"; };
 		DBDD13AC1F6147E600447E37 /* SpaceGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpaceGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBDD13AF1F6147E600447E37 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DBDD13B11F6147E600447E37 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -41,6 +56,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DB71750F1F66EDA000666B88 /* Spawnable Sprites */ = {
+			isa = PBXGroup;
+			children = (
+				DB7C8F6F1F630B32002C3F6A /* Laser.sks */,
+				DB71750D1F66ED8F00666B88 /* EnemySprite.sks */,
+				DB069EC61F6957540012AA69 /* Item.sks */,
+			);
+			name = "Spawnable Sprites";
+			sourceTree = "<group>";
+		};
 		DBDD13A31F6147E600447E37 = {
 			isa = PBXGroup;
 			children = (
@@ -60,12 +85,18 @@
 		DBDD13AE1F6147E600447E37 /* SpaceGame */ = {
 			isa = PBXGroup;
 			children = (
+				DB3904981F69ADBB0078948C /* LLPIXEL3.ttf */,
+				DB71750F1F66EDA000666B88 /* Spawnable Sprites */,
 				DBDD13AF1F6147E600447E37 /* AppDelegate.swift */,
 				DBDD13B11F6147E600447E37 /* GameScene.sks */,
+				DB7C8F711F66C449002C3F6A /* Explosion.sks */,
 				DBDD13B31F6147E600447E37 /* Actions.sks */,
 				DBDD13B51F6147E600447E37 /* GameScene.swift */,
+				DB3904941F69A8BF0078948C /* GameOverScene.swift */,
+				DB3904961F69A8D60078948C /* GameOverScene.sks */,
 				DBDD13B71F6147E600447E37 /* GameViewController.swift */,
 				DBDD13B91F6147E600447E37 /* Main.storyboard */,
+				DB069ECE1F6970070012AA69 /* MenuVC.swift */,
 				DBDD13BC1F6147E600447E37 /* Assets.xcassets */,
 				DBDD13BE1F6147E600447E37 /* LaunchScreen.storyboard */,
 				DBDD13C11F6147E600447E37 /* Info.plist */,
@@ -132,10 +163,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB069EC71F6957540012AA69 /* Item.sks in Resources */,
 				DBDD13BB1F6147E600447E37 /* Main.storyboard in Resources */,
 				DBDD13B21F6147E600447E37 /* GameScene.sks in Resources */,
 				DBDD13BD1F6147E600447E37 /* Assets.xcassets in Resources */,
+				DB7C8F701F630B32002C3F6A /* Laser.sks in Resources */,
 				DBDD13C01F6147E600447E37 /* LaunchScreen.storyboard in Resources */,
+				DB7C8F721F66C449002C3F6A /* Explosion.sks in Resources */,
+				DB71750E1F66ED8F00666B88 /* EnemySprite.sks in Resources */,
+				DB3904971F69A8D60078948C /* GameOverScene.sks in Resources */,
 				DBDD13B41F6147E600447E37 /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -147,7 +183,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB3904951F69A8BF0078948C /* GameOverScene.swift in Sources */,
 				DBDD13B61F6147E600447E37 /* GameScene.swift in Sources */,
+				DB069ECF1F6970070012AA69 /* MenuVC.swift in Sources */,
 				DBDD13B81F6147E600447E37 /* GameViewController.swift in Sources */,
 				DBDD13B01F6147E600447E37 /* AppDelegate.swift in Sources */,
 			);
@@ -289,6 +327,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 43XS98YV98;
 				INFOPLIST_FILE = SpaceGame/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = SIRI.SpaceGame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -304,6 +343,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 43XS98YV98;
 				INFOPLIST_FILE = SpaceGame/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = SIRI.SpaceGame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
