@@ -12,7 +12,7 @@ import GameplayKit
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     //Nodes
-    var player: SKSpriteNode?
+    var player: SKSpriteNode!
     var enemy: SKSpriteNode?
     var spawnedEnemy : SKSpriteNode?
     var item: SKSpriteNode?
@@ -28,9 +28,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var lastTimeShotWasFired : TimeInterval = 0
     var lastTimeEnemySpawned : TimeInterval = 0
     
-    
-    
-    let nodesToBeRemoved = ["laser", "enemy"]
+    let nodesToBeRemoved = ["laser", "enemy", "enemy2", "explosion"]
     var scoreLabel: SKLabelNode?
     var score = 0
     
@@ -66,13 +64,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         enemy?.physicsBody?.collisionBitMask = noCategory
         enemy?.physicsBody?.contactTestBitMask = playerCategory | laserCategory
         
-        let scene:SKScene = SKScene(fileNamed: "EnemySprite")!
-        spawnedEnemy = scene.childNode(withName: "enemy2") as? SKSpriteNode
-        //spawnedEnemy = self.childNode(withName: "enemy") as? SKSpriteNode
         
-        spawnedEnemy?.physicsBody?.categoryBitMask = enemyCategory
-        spawnedEnemy?.physicsBody?.collisionBitMask = noCategory
-        spawnedEnemy?.physicsBody?.contactTestBitMask = playerCategory | laserCategory
         
         
         
@@ -126,48 +118,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    func enemyDidCollide(with other: SKNode) {
-        if other.parent == nil {
-            
-        }
-        
-        let otherCategory = other.physicsBody?.categoryBitMask
-        
-        
-        
-            if (otherCategory == laserCategory ) {
-                let explosion: SKEmitterNode = SKEmitterNode(fileNamed: "Explosion")!
-                explosion.position = spawnedEnemy!.position
-                //explosion.position = spawnedEnemy?.position
-                self.addChild(explosion)
-            }
-            
-        
-        
-      
-    }
+    
     
     func didBegin (_ contact: SKPhysicsContact) {
         let categoryA: UInt32 = contact.bodyA.categoryBitMask
         let categoryB: UInt32 = contact.bodyB.categoryBitMask
         
+        guard let nodeB = contact.bodyB.node else {
+            return
+        }
+        
+        guard let nodeA = contact.bodyA.node else {
+            return
+        }
+        
         if categoryA == playerCategory || categoryB == playerCategory {
-            let otherNode: SKNode = (categoryA == playerCategory) ? contact.bodyB.node! : contact.bodyA.node!
+            let otherNode: SKNode = (categoryA == playerCategory) ? nodeB : nodeA
             playerDidCollide(with: otherNode)
             
         } else if categoryA == enemyCategory || categoryB == enemyCategory {
-            guard let nodeB = contact.bodyB.node else {
-                return
-            }
             
-            guard let nodeA = contact.bodyA.node else {
-                return
-            }
-           
-            let otherNode: SKNode = (categoryA == enemyCategory) ? nodeB : nodeA
-            enemyDidCollide(with: otherNode)
+            let explosion:SKEmitterNode = SKEmitterNode(fileNamed: "Explosion")!
             
-     
+            explosion.position = contact.bodyA.node!.position
+            self.addChild(explosion)
+            
             contact.bodyA.node?.removeFromParent()
             contact.bodyB.node?.removeFromParent()
         }
@@ -208,10 +183,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 if (node is SKSpriteNode) {
                     let sprite = node as! SKSpriteNode
                     
-                    if (sprite.position.x > self.player!.position.x + self.scene!.size.width
-                        || sprite.position.x < self.player!.position.x - self.scene!.size.width
-                        || sprite.position.y > self.player!.position.y + self.scene!.size.height
-                        || sprite.position.y < self.player!.position.y - self.scene!.size.height
+                    if (sprite.position.x > self.frame.size.width
+                        //|| sprite.position.x < self.player!.position.x - self.scene!.size.width
+                        
+                        || sprite.position.y > self.frame.maxY + self.player!.position.y + self.cameraOffsetValue
+                        || sprite.position.y < self.frame.minY - self.scene!.size.height
                         )
                     {
                         sprite.removeFromParent()
@@ -219,7 +195,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 }
             }
         }
-        
+        //Making the camera move with the player
         cameraNode?.position.y = player!.position.y + cameraOffsetValue
     }
     
@@ -243,7 +219,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         spawnEnemy()
         timeSinceLastEnemySpawn = 0
-        
     }
     
     func spawnLaser() {
@@ -257,17 +232,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func spawnEnemy() {
-        print("Spawning Enem")
-        let spriteWidth = 60
-        let lowerValue = Int(frame.minX) + spriteWidth
-        let upperValue = Int(frame.maxX) - spriteWidth
+        let spriteWidth: CGFloat = 60
+        let lowerValue = Int(frame.minX + spriteWidth)
+        let upperValue = Int(frame.maxX - spriteWidth)
         let randomXPosition = Int(arc4random_uniform(UInt32(upperValue - lowerValue + 1))) + lowerValue
-        
-        spawnedEnemy?.move(toParent: self)
-        spawnedEnemy?.position = CGPoint(x: CGFloat(randomXPosition), y: player!.position.y + 1500)
+        let scene:SKScene = SKScene(fileNamed: "EnemySprite")!
+        spawnedEnemy = scene.childNode(withName: "enemy2") as? SKSpriteNode
+        spawnedEnemy?.physicsBody?.categoryBitMask = enemyCategory
+        spawnedEnemy?.physicsBody?.collisionBitMask = noCategory
+        spawnedEnemy?.physicsBody?.contactTestBitMask = playerCategory | laserCategory
+        spawnedEnemy?.position = CGPoint(x: CGFloat(randomXPosition), y: frame.maxY + player.position.y + cameraOffsetValue)
         spawnedEnemy?.physicsBody?.velocity.dy = attackSpeed
-        
+        spawnedEnemy?.move(toParent: self)
+    
     }
-    
-    
 }
