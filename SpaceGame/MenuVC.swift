@@ -12,7 +12,7 @@ import UIKit
 class MenuVC : UIViewController {
     /*
     enum gameType {
-        case: easy
+        case: easyx
         case: medium
         case: hard
         
