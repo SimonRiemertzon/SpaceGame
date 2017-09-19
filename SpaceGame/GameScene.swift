@@ -271,6 +271,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         itemRate = itemRate + giveRandomNumberBetween(lowerValue: 11, upperValue: 20, oneDecimal: true)
         
-        
+      
     }
 }
